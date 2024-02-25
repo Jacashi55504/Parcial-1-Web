@@ -1,0 +1,38 @@
+.carousel-item img{
+    height: 350px;
+    object-fit: scale-down;
+}
+
+/* Media query para ajustar el tamaño de las imágenes en pantallas más pequeñas 
+@media (max-width: 768px) {
+    .carousel-img{
+        height: 50px;  
+        object-fit: cover;
+    }*/
+
+#carousel {
+    height: 360px; 
+    background-color:black;
+}
+#contenedor_carr{
+    background-color:black;
+}
+body{
+    background-color: lightgray;
+}
+
+footer {
+    background-color: lightgray;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: auto;
+}
+.footer-col{
+    background-color: rgb(89, 165, 12);
+}
+
+#carruselproductos .carousel-item {
+    flex: 0 0 auto; /* Ajusta el tamaño de los elementos del carrusel */
+    width: auto !important; /* Anula cualquier ancho definido previamente */
+    height: auto !important; /* Anula cualquier altura definida previamente */
+}
