@@ -36,3 +36,7 @@ footer {
     width: auto !important; /* Anula cualquier ancho definido previamente */
     height: auto !important; /* Anula cualquier altura definida previamente */
 }
+#containerhm img{
+    object-fit: contain;
+ 
+}
