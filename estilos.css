@@ -3,12 +3,7 @@
     object-fit: scale-down;
 }
 
-/* Media query para ajustar el tamaño de las imágenes en pantallas más pequeñas 
-@media (max-width: 768px) {
-    .carousel-img{
-        height: 50px;  
-        object-fit: cover;
-    }*/
+
 
 #carousel {
     height: 360px; 
@@ -23,9 +18,9 @@ body{
 
 footer {
     background-color: lightgray;
-    text-align: center;
     padding: 20px 0;
     margin-top: auto;
+    
 }
 .footer-col{
     background-color: rgb(89, 165, 12);
@@ -39,4 +34,14 @@ footer {
 #containerhm img{
     object-fit: contain;
  
+}
+#containerhm button{
+    padding: 9px 15px;
+}
+#containerhm button:hover{
+    background-color: darkgray;
+}
+#imagentransicion{
+    height: 350px;
+    object-fit: contain;
 }
