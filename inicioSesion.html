@@ -19,17 +19,21 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               
-              <li class="nav-item dropdown ">
+              <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fas fa-user" style="color: #020812;"></i>
                 </a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="./inicioSesion.html">Iniciar sesión</a></li>
-                  <li><a class="dropdown-item" href="./registrarse.html">Registrarse</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  
+                <ul class="dropdown-menu" id="dropdownMenu">
+                    <!-- Los elementos predeterminados del dropdown -->
+                    <li><a class="dropdown-item" href="./inicioSesion.html">Iniciar sesión</a></li>
+                    <li><a class="dropdown-item" href="./registrarse.html">Registrarse</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <!-- El siguiente elemento se agregará o actualizará dinámicamente -->
+                    <!-- <li><a class="dropdown-item" href="#">Cerrar sesión</a></li> -->
                 </ul>
-              </li>
+            </li>
+            
+            
               
             </ul>
             <form class="d-flex" role="search">
@@ -88,9 +92,10 @@
                 if (data.token) {
                     // Guardar el token en localStorage
                     localStorage.setItem('token', data.token);
+                    window.token=data.token;
                     alert('Inicio de sesión exitoso');
                     // Redirigir a la página de inicio o a cualquier otra página deseada
-                    window.location.href = '/index.html';
+                    //window.location.href = '/index.html';
                 } else {
                     alert('Credenciales inválidas');
                 }
@@ -100,6 +105,8 @@
             }
         });
     </script>
+    
+    
 
 
 
@@ -107,7 +114,7 @@
 
     
         
-        
+        <script src="behavior.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 </body>
