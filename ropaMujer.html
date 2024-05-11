@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ropa de mujer</title>
+    <title>Ropa mujer</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="icon" href="/img/Gymshark-Logo.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="./estilos.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+
 </head>
 <body>
     <nav class="navbar navbar-expand-sm bg-body-tertiary py-3 fixed-top">
@@ -29,13 +32,15 @@
                   <li><hr class="dropdown-divider"></li>
                   
                 </ul>
+                
               </li>
               
             </ul>
             <form class="d-flex" role="search">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
+              <a href="./pedidos.html" class="btn btn-outline-success">Mis pedidos</a>
+          </form>
+          <button type="button" class="btn btn-outline-success" id="ver-carrito" data-bs-toggle="modal" data-bs-target="#productos-agregados">Ver Carrito</button>
+
           </div>
         </div>
       </nav>
@@ -58,6 +63,7 @@
         <h4><strong>PRENDAS PARTE SUPERIOR</strong></h4>
         
       </div>
+      
       <div id="carruselproductos" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner d-flex flex-row"style="overflow-x: auto;">
           <div class="carousel-item active">
@@ -68,6 +74,11 @@
                   <div class="card-body">
                     <h5 class="card-title">Playera camo rosa</h5>
                     <p class="card-text">349$</p>
+                    <div class="mb-3">
+                      <label for="cantidad" class="form-label">Cantidad:</label>
+                      <input type="number" id="cantidad" class="form-control input-xs" value="1" min="1">
+                  </div>
+                    <button class="btn btn-secondary btn-sm d-block mx-auto btn-agregar">Agregar al carrito</button>
                   </div>
                 </div>
               </div>
@@ -77,6 +88,12 @@
                   <div class="card-body">
                     <h5 class="card-title">Sports bra lila</h5>
                     <p class="card-text">449$</p>
+                    <div class="mb-3">
+                      <label for="cantidad" class="form-label">Cantidad:</label>
+                      <input type="number" id="cantidad" class="form-control input-xs" value="1" min="1">
+                  </div>
+                    <button class="btn btn-secondary btn-sm d-block mx-auto btn-agregar">Agregar al carrito</button>
+
                   </div>
                 </div>
               </div>
@@ -86,6 +103,12 @@
                   <div class="card-body">
                     <h5 class="card-title">Sports bra camo negro</h5>
                     <p class="card-text">499$</p>
+                    <div class="mb-3">
+                      <label for="cantidad" class="form-label">Cantidad:</label>
+                      <input type="number" id="cantidad" class="form-control input-xs" value="1" min="1">
+                  </div>
+                    <button class="btn btn-secondary btn-sm d-block mx-auto btn-agregar">Agregar al carrito</button>
+
                   </div>
                 </div>
               </div>
@@ -95,6 +118,12 @@
                   <div class="card-body">
                     <h5 class="card-title">Sports bra camo café</h5>
                     <p class="card-text">499$</p>
+                    <div class="mb-3">
+                      <label for="cantidad" class="form-label">Cantidad:</label>
+                      <input type="number" id="cantidad" class="form-control input-xs" value="1" min="1">
+                  </div>
+                    <button class="btn btn-secondary btn-sm d-block mx-auto btn-agregar">Agregar al carrito</button>
+
                   </div>
                 </div>
               </div>
@@ -104,6 +133,12 @@
                   <div class="card-body">
                     <h5 class="card-title">Playera oversized blanca</h5>
                     <p class="card-text">499$</p>
+                    <div class="mb-3">
+                      <label for="cantidad" class="form-label">Cantidad:</label>
+                      <input type="number" id="cantidad" class="form-control input-xs" value="1" min="1">
+                  </div>
+                    <button class="btn btn-secondary btn-sm d-block mx-auto btn-agregar">Agregar al carrito</button>
+
                   </div>
                 </div>
               </div>
@@ -113,6 +148,12 @@
                   <div class="card-body">
                     <h5 class="card-title">Crop top largo</h5>
                     <p class="card-text">799$</p>
+                    <div class="mb-3">
+                      <label for="cantidad" class="form-label">Cantidad:</label>
+                      <input type="number" id="cantidad" class="form-control input-xs" value="1" min="1">
+                  </div>
+                    <button class="btn btn-secondary btn-sm d-block mx-auto btn-agregar">Agregar al carrito</button>
+
                   </div>
                 </div>
               </div>
@@ -122,6 +163,12 @@
                   <div class="card-body">
                     <h5 class="card-title">Crop mesh tank</h5>
                     <p class="card-text">549$</p>
+                    <div class="mb-3">
+                      <label for="cantidad" class="form-label">Cantidad:</label>
+                      <input type="number" id="cantidad" class="form-control input-xs" value="1" min="1">
+                  </div>
+                    <button class="btn btn-secondary btn-sm d-block mx-auto btn-agregar">Agregar al carrito</button>
+
                   </div>
                 </div>
               </div>
@@ -131,6 +178,12 @@
                   <div class="card-body">
                     <h5 class="card-title">Hoodie basico</h5>
                     <p class="card-text">1199$</p>
+                    <div class="mb-3">
+                      <label for="cantidad" class="form-label">Cantidad:</label>
+                      <input type="number" id="cantidad" class="form-control input-xs" value="1" min="1">
+                  </div>
+                    <button class="btn btn-secondary btn-sm d-block mx-auto btn-agregar">Agregar al carrito</button>
+
                   </div>
                 </div>
               </div>
@@ -140,6 +193,28 @@
         </div>
          
       </div>
+      <!-- Contenedor para mostrar los productos agregados -->
+<div id="productos-agregados" class="modal fade">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">Productos Agregados</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <ul id="lista-productos" class="list-group">
+                  <!-- Aquí se mostrarán los productos agregados -->
+              </ul>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+              <button type="button" class="btn btn-danger" id="borrar-carrito">Borrar Carrito</button>
+
+          </div>
+      </div>
+  </div>
+</div>
+
       <div class="container-fluid text-center" style="background-color: black; margin-top: 70px;margin-bottom: 0; color: white;">
         <h1>NO TE PIERDAS NUESTROS PRÓXIMOS EVENTOS</h1>
         <img src="img/Lift_Miami.jpg" alt="" id="imagentransicion">
@@ -267,6 +342,6 @@
 
       <script src="behavior.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-  
+
 </body>
 </html>

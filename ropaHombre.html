@@ -8,6 +8,9 @@
     <link rel="icon" href="/img/Gymshark-Logo.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="./estilos.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+
 </head>
 <body>
     <nav class="navbar navbar-expand-sm bg-body-tertiary py-3 fixed-top">
@@ -33,9 +36,10 @@
               
             </ul>
             <form class="d-flex" role="search">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
+              <a href="./pedidos.html" class="btn btn-outline-success">Mis pedidos</a>
+          </form>
+          <button type="button" class="btn btn-outline-success" id="ver-carrito" data-bs-toggle="modal" data-bs-target="#productos-agregados">Ver Carrito</button>
+
           </div>
         </div>
       </nav>
@@ -67,6 +71,11 @@
                   <div class="card-body">
                     <h5 class="card-title">Stringer blanca</h5>
                     <p class="card-text">449$</p>
+                    <div class="mb-3">
+                      <label for="cantidad" class="form-label">Cantidad:</label>
+                      <input type="number" id="cantidad" class="form-control input-xs" value="1" min="1">
+                  </div>
+                    <button class="btn btn-secondary btn-sm d-block mx-auto btn-agregar">Agregar al carrito</button>
                   </div>
                 </div>
               </div>
@@ -76,6 +85,12 @@
                   <div class="card-body">
                     <h5 class="card-title">Stringer azul</h5>
                     <p class="card-text">449$</p>
+                    <div class="mb-3">
+                      <label for="cantidad" class="form-label">Cantidad:</label>
+                      <input type="number" id="cantidad" class="form-control input-xs" value="1" min="1">
+                  </div>
+                    <button class="btn btn-secondary btn-sm d-block mx-auto btn-agregar">Agregar al carrito</button>
+
                   </div>
                 </div>
               </div>
@@ -85,6 +100,12 @@
                   <div class="card-body">
                     <h5 class="card-title">Tank verde</h5>
                     <p class="card-text">599$</p>
+                    <div class="mb-3">
+                      <label for="cantidad" class="form-label">Cantidad:</label>
+                      <input type="number" id="cantidad" class="form-control input-xs" value="1" min="1">
+                  </div>
+                    <button class="btn btn-secondary btn-sm d-block mx-auto btn-agregar">Agregar al carrito</button>
+
                   </div>
                 </div>
               </div>
@@ -94,6 +115,12 @@
                   <div class="card-body">
                     <h5 class="card-title">Playera manga larga</h5>
                     <p class="card-text">899$</p>
+                    <div class="mb-3">
+                      <label for="cantidad" class="form-label">Cantidad:</label>
+                      <input type="number" id="cantidad" class="form-control input-xs" value="1" min="1">
+                  </div>
+                    <button class="btn btn-secondary btn-sm d-block mx-auto btn-agregar">Agregar al carrito</button>
+
                   </div>
                 </div>
               </div>
@@ -103,6 +130,12 @@
                   <div class="card-body">
                     <h5 class="card-title">Hoodie gris claro</h5>
                     <p class="card-text">1199$</p>
+                    <div class="mb-3">
+                      <label for="cantidad" class="form-label">Cantidad:</label>
+                      <input type="number" id="cantidad" class="form-control input-xs" value="1" min="1">
+                  </div>
+                    <button class="btn btn-secondary btn-sm d-block mx-auto btn-agregar">Agregar al carrito</button>
+
                   </div>
                 </div>
               </div>
@@ -112,6 +145,12 @@
                   <div class="card-body">
                     <h5 class="card-title">Hoodie sin mangas</h5>
                     <p class="card-text">999$</p>
+                    <div class="mb-3">
+                      <label for="cantidad" class="form-label">Cantidad:</label>
+                      <input type="number" id="cantidad" class="form-control input-xs" value="1" min="1">
+                  </div>
+                    <button class="btn btn-secondary btn-sm d-block mx-auto btn-agregar">Agregar al carrito</button>
+
                   </div>
                 </div>
               </div>
@@ -121,6 +160,12 @@
                   <div class="card-body">
                     <h5 class="card-title">Chamarra sport</h5>
                     <p class="card-text">1699$</p>
+                    <div class="mb-3">
+                      <label for="cantidad" class="form-label">Cantidad:</label>
+                      <input type="number" id="cantidad" class="form-control input-xs" value="1" min="1">
+                  </div>
+                    <button class="btn btn-secondary btn-sm d-block mx-auto btn-agregar">Agregar al carrito</button>
+
                   </div>
                 </div>
               </div>
@@ -130,6 +175,12 @@
                   <div class="card-body">
                     <h5 class="card-title">Playera oversized gris</h5>
                     <p class="card-text">649$</p>
+                    <div class="mb-3">
+                      <label for="cantidad" class="form-label">Cantidad:</label>
+                      <input type="number" id="cantidad" class="form-control input-xs" value="1" min="1">
+                  </div>
+                    <button class="btn btn-secondary btn-sm d-block mx-auto btn-agregar">Agregar al carrito</button>
+
                   </div>
                 </div>
               </div>
@@ -194,6 +245,12 @@
                   <div class="card-body">
                     <h5 class="card-title">Joggers cargo negros</h5>
                     <p class="card-text">1499$</p>
+                    <div class="mb-3">
+                      <label for="cantidad" class="form-label">Cantidad:</label>
+                      <input type="number" id="cantidad" class="form-control input-xs" value="1" min="1">
+                  </div>
+                    <button class="btn btn-secondary btn-sm d-block mx-auto btn-agregar">Agregar al carrito</button>
+
                   </div>
                 </div>
               </div>
@@ -203,6 +260,12 @@
                   <div class="card-body">
                     <h5 class="card-title">Joggers cargo verdes</h5>
                     <p class="card-text">1449$</p>
+                    <div class="mb-3">
+                      <label for="cantidad" class="form-label">Cantidad:</label>
+                      <input type="number" id="cantidad" class="form-control input-xs" value="1" min="1">
+                  </div>
+                    <button class="btn btn-secondary btn-sm d-block mx-auto btn-agregar">Agregar al carrito</button>
+
                   </div>
                 </div>
               </div>
@@ -212,6 +275,12 @@
                   <div class="card-body">
                     <h5 class="card-title">Shorts cortos</h5>
                     <p class="card-text">699$</p>
+                    <div class="mb-3">
+                      <label for="cantidad" class="form-label">Cantidad:</label>
+                      <input type="number" id="cantidad" class="form-control input-xs" value="1" min="1">
+                  </div>
+                    <button class="btn btn-secondary btn-sm d-block mx-auto btn-agregar">Agregar al carrito</button>
+
                   </div>
                 </div>
               </div>
@@ -221,6 +290,12 @@
                   <div class="card-body">
                     <h5 class="card-title">Shorts militares</h5>
                     <p class="card-text">799$</p>
+                    <div class="mb-3">
+                      <label for="cantidad" class="form-label">Cantidad:</label>
+                      <input type="number" id="cantidad" class="form-control input-xs" value="1" min="1">
+                  </div>
+                    <button class="btn btn-secondary btn-sm d-block mx-auto btn-agregar">Agregar al carrito</button>
+
                   </div>
                 </div>
               </div>
@@ -230,6 +305,12 @@
                   <div class="card-body">
                     <h5 class="card-title">Joggers básicos negros</h5>
                     <p class="card-text">1199$</p>
+                    <div class="mb-3">
+                      <label for="cantidad" class="form-label">Cantidad:</label>
+                      <input type="number" id="cantidad" class="form-control input-xs" value="1" min="1">
+                  </div>
+                    <button class="btn btn-secondary btn-sm d-block mx-auto btn-agregar">Agregar al carrito</button>
+
                   </div>
                 </div>
               </div>
@@ -239,6 +320,12 @@
                   <div class="card-body">
                     <h5 class="card-title">Joggers básicos cafés</h5>
                     <p class="card-text">1199$</p>
+                    <div class="mb-3">
+                      <label for="cantidad" class="form-label">Cantidad:</label>
+                      <input type="number" id="cantidad" class="form-control input-xs" value="1" min="1">
+                  </div>
+                    <button class="btn btn-secondary btn-sm d-block mx-auto btn-agregar">Agregar al carrito</button>
+
                   </div>
                 </div>
               </div>
@@ -248,6 +335,12 @@
                   <div class="card-body">
                     <h5 class="card-title">Shorts negros básicos</h5>
                     <p class="card-text">799$</p>
+                    <div class="mb-3">
+                      <label for="cantidad" class="form-label">Cantidad:</label>
+                      <input type="number" id="cantidad" class="form-control input-xs" value="1" min="1">
+                  </div>
+                    <button class="btn btn-secondary btn-sm d-block mx-auto btn-agregar">Agregar al carrito</button>
+
                   </div>
                 </div>
               </div>
@@ -257,6 +350,12 @@
                   <div class="card-body">
                     <h5 class="card-title">Shorts cargo</h5>
                     <p class="card-text">899$</p>
+                    <div class="mb-3">
+                      <label for="cantidad" class="form-label">Cantidad:</label>
+                      <input type="number" id="cantidad" class="form-control input-xs" value="1" min="1">
+                  </div>
+                    <button class="btn btn-secondary btn-sm d-block mx-auto btn-agregar">Agregar al carrito</button>
+
                   </div>
                 </div>
               </div>
@@ -266,6 +365,28 @@
         </div>
          
       </div>
+      <!-- Contenedor para mostrar los productos agregados -->
+<div id="productos-agregados" class="modal fade">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">Productos Agregados</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <ul id="lista-productos" class="list-group">
+                  <!-- Aquí se mostrarán los productos agregados -->
+              </ul>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+              <button type="button" class="btn btn-danger" id="borrar-carrito">Borrar Carrito</button>
+
+          </div>
+      </div>
+  </div>
+</div>
+
 
 
       <footer class="container-fluid" style="margin-top: 50px;">

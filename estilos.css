@@ -45,3 +45,6 @@ footer {
     height: 350px;
     object-fit: contain;
 }
+.input-xs {
+    width: 70px; 
+}
