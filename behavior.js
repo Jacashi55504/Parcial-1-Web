@@ -1,7 +1,6 @@
-
 // Verificar si hay un token JWT en localStorage
 const token = localStorage.getItem('token');
-window.token=token
+window.token = token;
 
 if (window.token) {
     // Si hay un token, ocultar los enlaces de inicio de sesión y registro y mostrar "Cerrar sesión"
@@ -9,14 +8,24 @@ if (window.token) {
         <li><a class="dropdown-item" href="#">Cerrar sesión</a></li>
     `;
 }
+
 dropdownMenu.addEventListener('click', function(event) {
     if (event.target.textContent === 'Cerrar sesión') {
         localStorage.removeItem('token');
-        window.token=undefined;
+        window.token = undefined;
         window.location.reload();
-
     }
 });
+
+document.addEventListener('DOMContentLoaded', async () => {
+    if (window.token) {
+        // Mostrar pedidos
+        await cargarPedidos();
+    }
+});
+
+//CARRITO
+
 // Manejar evento de clic en el botón "Agregar al carrito"
 document.querySelectorAll('.btn-agregar').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -25,15 +34,16 @@ document.querySelectorAll('.btn-agregar').forEach(btn => {
 
         const cardBody = btn.closest('.card-body');
         const producto = cardBody.querySelector('.card-title').textContent;
-        const cantidad = parseInt(cardBody.querySelector('.form-control').value);
+        const precio = parseInt(cardBody.querySelector('.card-text').textContent.replace(/[^0-9.-]+/g, ""), 10);
+        const cantidad = parseInt(cardBody.querySelector('.form-control').value, 10);
 
         // Comprobar si el producto ya está en el carrito
         if (carrito.hasOwnProperty(producto)) {
             // Actualizar la cantidad sumándola a la cantidad existente
-            carrito[producto] += cantidad;
+            carrito[producto].cantidad += cantidad;
         } else {
             // Agregar el producto al carrito con su cantidad
-            carrito[producto] = cantidad;
+            carrito[producto] = { cantidad, precio };
         }
 
         // Guardar el estado actualizado del carrito en el almacenamiento local
@@ -43,54 +53,33 @@ document.querySelectorAll('.btn-agregar').forEach(btn => {
         actualizarVentanaEmergenteCarrito(carrito);
     });
 });
-/*
+
 // Función para actualizar la ventana emergente del carrito
 function actualizarVentanaEmergenteCarrito(carrito) {
     const listaProductos = document.getElementById('lista-productos');
-    // Limpiar la lista de productos antes de actualizarla
-    listaProductos.innerHTML = '';
-    // Iterar sobre los productos en el carrito y agregarlos a la lista
-    for (const producto in carrito) {
-        const li = document.createElement('li');
-        li.classList.add('list-group-item');
-        li.textContent = `${producto}: ${carrito[producto]}`;
-        listaProductos.appendChild(li);
-    }
-    // Mostrar la ventana emergente del carrito
-    const modal = new bootstrap.Modal(document.getElementById('productos-agregados'));
-    modal.show();
-}*/
-// Función para actualizar la ventana emergente del carrito
-function actualizarVentanaEmergenteCarrito(carrito) {
-    const listaProductos = document.getElementById('lista-productos');
-    // Limpiar la lista de productos antes de actualizarla
     listaProductos.innerHTML = '';
 
-    // Arrays para almacenar los nombres y las cantidades de los productos
     const nombresArticulos = [];
     const cantidades = [];
+    const precios = [];
 
-    // Iterar sobre los productos en el carrito y agregarlos a la lista
     for (const producto in carrito) {
         const li = document.createElement('li');
         li.classList.add('list-group-item');
-        li.textContent = `${producto}: ${carrito[producto]}`;
+        li.textContent = `${producto}: ${carrito[producto].cantidad}`;
         listaProductos.appendChild(li);
 
-        // Agregar el nombre del producto al array de nombres
         nombresArticulos.push(producto);
-
-        // Agregar la cantidad del producto al array de cantidades
-        cantidades.push(carrito[producto]);
+        cantidades.push(carrito[producto].cantidad);
+        precios.push(carrito[producto].precio);
     }
 
-    // Guardar los arrays de nombres y cantidades en el localStorage
     localStorage.setItem('nombresArticulos', JSON.stringify(nombresArticulos));
     localStorage.setItem('cantidades', JSON.stringify(cantidades));
+    localStorage.setItem('precios', JSON.stringify(precios));
 
-    // Mostrar la ventana emergente del carrito
     const modal = new bootstrap.Modal(document.getElementById('productos-agregados'));
-    modal.show(); 
+    modal.show();
 }
 
 document.getElementById('borrar-carrito').addEventListener('click', function() {
@@ -99,13 +88,7 @@ document.getElementById('borrar-carrito').addEventListener('click', function() {
     // Limpiar el carrito almacenado en localStorage
     localStorage.removeItem('carrito');
 });
-/*
-document.getElementById('ver-carrito').addEventListener('click', function() {
-    // Obtener el estado actual del carrito del almacenamiento local
-    let carrito = JSON.parse(localStorage.getItem('carrito')) || {};
-    // Actualizar la ventana emergente del carrito con los productos actuales
-    actualizarVentanaEmergenteCarrito(carrito);
-});*/
+
 document.getElementById('ver-carrito').addEventListener('click', function() {
     // Obtener el estado actual del carrito del almacenamiento local
     let carrito = JSON.parse(localStorage.getItem('carrito')) || {};
@@ -118,7 +101,7 @@ document.getElementById('ver-carrito').addEventListener('click', function() {
     for (const producto in carrito) {
         const li = document.createElement('li');
         li.classList.add('list-group-item');
-        li.textContent = `${producto}: ${carrito[producto]}`;
+        li.textContent = `${producto}: ${carrito[producto].cantidad}`;
         listaProductos.appendChild(li);
     }
 
@@ -127,30 +110,73 @@ document.getElementById('ver-carrito').addEventListener('click', function() {
     const modal = bootstrap.Modal.getInstance(modalElement);
     modal.show();
 });
+
+// PEDIDOS
+
+// Función para cargar pedidos
+async function cargarPedidos() {
+    const response = await fetch('http://localhost:8000/api/pedidos/', {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+    if (response.ok) {
+        const pedidos = await response.json();
+        const pedidosContainer = document.getElementById('pedidos-container');
+        pedidosContainer.innerHTML = '';
+        pedidos.forEach(pedido => {
+            const pedidoDiv = document.createElement('div');
+            pedidoDiv.innerHTML = `
+                <div>Pedido ID: ${pedido._id} - Total: ${pedido.total}</div>
+                <button onclick="editarPedido('${pedido._id}')">Editar</button>
+                <button onclick="borrarPedido('${pedido._id}')">Borrar</button>
+                <ul>${pedido.articulos.map((articulo, index) => `<li>${articulo.nombre}: ${pedido.cantidades[index]}</li>`).join('')}</ul>
+            `;
+            pedidosContainer.appendChild(pedidoDiv);
+        });
+    }
+}
+
+// Función para editar un pedido
+async function editarPedido(id) {
+    console.log('Editar pedido', id);
+    // Implementar lógica para editar un pedido
+}
+
+// Función para borrar un pedido
+async function borrarPedido(id) {
+    console.log('Borrar pedido', id);
+    const response = await fetch(`http://localhost:8000/api/pedidos/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+    if (response.ok) {
+        alert('Pedido borrado con éxito');
+        cargarPedidos();  // Recargar pedidos después de borrar
+    }
+}
+
+// Función para realizar un pedido
 document.getElementById('realizar-pedido').addEventListener('click', async () => {
     try {
-        // Obtener el estado del carrito del localStorage
         const carrito = JSON.parse(localStorage.getItem('carrito'));
-
-        // Obtener los nombres de los productos y las cantidades del carrito
         const nombresArticulos = Object.keys(carrito);
-        const cantidades = Object.values(carrito);
+        const detallesArticulos = nombresArticulos.map(nombre => {
+            return {
+                nombre: nombre,
+                cantidad: carrito[nombre].cantidad,
+                precio: carrito[nombre].precio
+            };
+        });
 
-        // Obtener el token de autenticación almacenado como variable global
-        const token = window.token;
-
-        // Verificar si el token está disponible
-        if (!token) {
-            throw new Error('Token de autenticación no disponible');
-        }
-
-        // Crear el cuerpo de la solicitud
         const body = {
-            articulos: nombresArticulos,
-            cantidades: cantidades
+            articulos: detallesArticulos.map(item => item.nombre),
+            cantidades: detallesArticulos.map(item => item.cantidad),
+            precios: detallesArticulos.map(item => item.precio)
         };
 
-        // Realizar la solicitud POST al endpoint de pedidos
         const response = await fetch('http://localhost:8000/api/pedidos/', {
             method: 'POST',
             headers: {
@@ -160,21 +186,12 @@ document.getElementById('realizar-pedido').addEventListener('click', async () =>
             body: JSON.stringify(body)
         });
 
-        // Verificar el estado de la respuesta
-        if (!response.ok) {
-            throw new Error('Error al realizar el pedido');
-        }
-
-        // Limpiar el carrito del localStorage después de realizar el pedido
-        //localStorage.clear();
-        localStorage.removeItem('carrito');
-
-        // Mostrar un mensaje de éxito
+        if (!response.ok) throw new Error('Error al realizar el pedido');
         alert('Pedido realizado con éxito');
+        localStorage.removeItem('carrito');
         window.location.reload();
     } catch (error) {
-        // Manejar cualquier error que ocurra durante el proceso
         console.error(error.message);
-        alert('Error al realizar el pedido');
+        alert('Error al realizar el pedido: ' + error.message);
     }
 });
