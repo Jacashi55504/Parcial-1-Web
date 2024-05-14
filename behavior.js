@@ -9,6 +9,7 @@ if (window.token) {
     `;
 }
 
+
 dropdownMenu.addEventListener('click', function(event) {
     if (event.target.textContent === 'Cerrar sesión') {
         localStorage.removeItem('token');
@@ -16,7 +17,13 @@ dropdownMenu.addEventListener('click', function(event) {
         window.location.reload();
     }
 });
+    }
+});
 
+document.addEventListener('DOMContentLoaded', async () => {
+    if (window.token) {
+        // Mostrar pedidos
+        await cargarPedidos();
 document.addEventListener('DOMContentLoaded', async () => {
     if (window.token) {
         // Mostrar pedidos
@@ -25,6 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 // CARRITO
+
 
 // Manejar evento de clic en el botón "Agregar al carrito"
 document.querySelectorAll('.btn-agregar').forEach(btn => {
@@ -35,6 +43,7 @@ document.querySelectorAll('.btn-agregar').forEach(btn => {
         const cardBody = btn.closest('.card-body');
         const producto = cardBody.querySelector('.card-title').textContent;
         const precio = parseInt(cardBody.querySelector('.card-text').textContent.replace(/[^0-9.-]+/g, ""), 10);
+        const precio = parseFloat(cardBody.querySelector('.card-text').textContent.replace(/[^0-9.-]+/g, "")); // agregar el precio del producto al agregarlo
         const cantidad = parseInt(cardBody.querySelector('.form-control').value, 10);
 
         // Comprobar si el producto ya está en el carrito
@@ -88,6 +97,7 @@ document.getElementById('borrar-carrito').addEventListener('click', function() {
     // Limpiar el carrito almacenado en localStorage
     localStorage.removeItem('carrito');
 });
+
 
 document.getElementById('ver-carrito').addEventListener('click', function() {
     // Obtener el estado actual del carrito del almacenamiento local
@@ -285,6 +295,9 @@ document.getElementById('realizar-pedido').addEventListener('click', async () =>
             articulos: detallesArticulos.map(item => item.nombre),
             cantidades: detallesArticulos.map(item => item.cantidad),
             precios: detallesArticulos.map(item => item.precio)
+            articulos: detallesArticulos.map(item => item.nombre),
+            cantidades: detallesArticulos.map(item => item.cantidad),
+            precios: detallesArticulos.map(item => item.precio)
         };
 
         const response = await fetch('http://localhost:8000/api/pedidos/', {
@@ -297,11 +310,14 @@ document.getElementById('realizar-pedido').addEventListener('click', async () =>
         });
 
         if (!response.ok) throw new Error('Error al realizar el pedido');
+        if (!response.ok) throw new Error('Error al realizar el pedido');
         alert('Pedido realizado con éxito');
+        localStorage.removeItem('carrito');
         localStorage.removeItem('carrito');
         window.location.reload();
     } catch (error) {
         console.error(error.message);
+        alert('Error al realizar el pedido: ' + error.message);
         alert('Error al realizar el pedido: ' + error.message);
     }
 });
