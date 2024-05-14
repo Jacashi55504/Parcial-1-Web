@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-//CARRITO
+// CARRITO
 
 // Manejar evento de clic en el botón "Agregar al carrito"
 document.querySelectorAll('.btn-agregar').forEach(btn => {
@@ -126,26 +126,94 @@ async function cargarPedidos() {
         pedidosContainer.innerHTML = '';
         pedidos.forEach(pedido => {
             const pedidoDiv = document.createElement('div');
+            pedidoDiv.classList.add('accordion-item');
             pedidoDiv.innerHTML = `
-                <div>Pedido ID: ${pedido._id} - Total: ${pedido.total}</div>
-                <button onclick="editarPedido('${pedido._id}')">Editar</button>
-                <button onclick="borrarPedido('${pedido._id}')">Borrar</button>
-                <ul>${pedido.articulos.map((articulo, index) => `<li>${articulo.nombre}: ${pedido.cantidades[index]}</li>`).join('')}</ul>
+                <h2 class="accordion-header" id="heading${pedido._id}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${pedido._id}" aria-expanded="false" aria-controls="collapse${pedido._id}">
+                        Pedido ID: ${pedido._id} - Total: ${pedido.total}
+                        <i class="fas fa-edit ms-2" onclick="mostrarEditarPedido('${pedido._id}')"></i>
+                    </button>
+                </h2>
+                <div id="collapse${pedido._id}" class="accordion-collapse collapse" aria-labelledby="heading${pedido._id}" data-bs-parent="#accordionPedidos">
+                    <div class="accordion-body">
+                        <ul class="list-group mb-3">
+                            ${pedido.articulos.map((articulo, index) => `
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span class="nombre-articulo">${articulo.nombre}</span>
+                                    <input type="number" value="${pedido.cantidades[index]}" class="form-control cantidad-articulo" style="width: 80px; text-align: center;" data-precio="${articulo.precio}" onchange="actualizarTotal('${pedido._id}')">
+                                    <button class="btn btn-sm btn-danger" onclick="borrarArticulo('${pedido._id}', '${articulo._id}')">Eliminar</button>
+                                </li>`).join('')}
+                        </ul>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span>Total: </span>
+                            <span id="total${pedido._id}" class="ms-2">${pedido.total}</span>
+                        </div>
+                        <button class="btn btn-primary mt-3" onclick="guardarPedido('${pedido._id}')">Guardar</button>
+                    </div>
+                </div>
             `;
             pedidosContainer.appendChild(pedidoDiv);
         });
     }
 }
 
-// Función para editar un pedido
-async function editarPedido(id) {
-    console.log('Editar pedido', id);
-    // Implementar lógica para editar un pedido
+function mostrarEditarPedido(id) {
+    document.getElementById(`collapse${id}`).classList.toggle('show');
 }
 
-// Función para borrar un pedido
+function actualizarTotal(id) {
+    const pedidoDiv = document.getElementById(`collapse${id}`);
+    const cantidades = pedidoDiv.querySelectorAll('.cantidad-articulo');
+    let total = 0;
+
+    cantidades.forEach(cantidadInput => {
+        const cantidad = parseInt(cantidadInput.value, 10);
+        const precio = parseFloat(cantidadInput.dataset.precio);
+        total += cantidad * precio;
+    });
+
+    document.getElementById(`total${id}`).textContent = total;
+}
+
+async function guardarPedido(id) {
+    const pedidoDiv = document.getElementById(`collapse${id}`);
+    const articulos = [];
+    const cantidades = [];
+    const precios = [];
+
+    pedidoDiv.querySelectorAll('.list-group-item').forEach(item => {
+        const nombre = item.querySelector('.nombre-articulo').textContent.trim();
+        const cantidad = parseInt(item.querySelector('.cantidad-articulo').value, 10);
+        const precio = parseFloat(item.querySelector('.cantidad-articulo').dataset.precio);
+        articulos.push(nombre);
+        cantidades.push(cantidad);
+        precios.push(precio);
+    });
+
+    const body = {
+        articulos,
+        cantidades,
+        precios
+    };
+
+    const response = await fetch(`http://localhost:8000/api/pedidos/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(body)
+    });
+
+    if (response.ok) {
+        alert('Pedido actualizado con éxito');
+        cargarPedidos();
+    } else {
+        alert('Error al actualizar el pedido');
+    }
+}
+
 async function borrarPedido(id) {
-    console.log('Borrar pedido', id);
     const response = await fetch(`http://localhost:8000/api/pedidos/${id}`, {
         method: 'DELETE',
         headers: {
@@ -154,11 +222,53 @@ async function borrarPedido(id) {
     });
     if (response.ok) {
         alert('Pedido borrado con éxito');
-        cargarPedidos();  // Recargar pedidos después de borrar
+        cargarPedidos();
+    } else {
+        alert('Error al borrar el pedido');
     }
 }
 
-// Función para realizar un pedido
+async function borrarArticulo(pedidoId, articuloId) {
+    const response = await fetch(`http://localhost:8000/api/pedidos/${pedidoId}/articulos/${articuloId}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+    if (response.ok) {
+        const resultado = await response.json();
+        alert(resultado.message);
+
+        if (resultado.pedido) {
+            // Actualizar el total automáticamente
+            const pedidoDiv = document.getElementById(`collapse${pedidoId}`);
+            if (pedidoDiv) {
+                const cantidades = pedidoDiv.querySelectorAll('.cantidad-articulo');
+                let total = 0;
+
+                cantidades.forEach(cantidadInput => {
+                    const cantidad = parseInt(cantidadInput.value, 10);
+                    const precio = parseFloat(cantidadInput.dataset.precio);
+                    total += cantidad * precio;
+                });
+
+                document.getElementById(`total${pedidoId}`).textContent = total;
+
+                // Si no quedan artículos, eliminar la visualización del pedido
+                if (cantidades.length === 0) {
+                    pedidoDiv.closest('.accordion-item').remove();
+                }
+            }
+        }
+
+        cargarPedidos(); // Vuelve a cargar los pedidos para reflejar el cambio en la UI
+    } else {
+        alert('Error al borrar el artículo');
+    }
+}
+
+
 document.getElementById('realizar-pedido').addEventListener('click', async () => {
     try {
         const carrito = JSON.parse(localStorage.getItem('carrito'));
